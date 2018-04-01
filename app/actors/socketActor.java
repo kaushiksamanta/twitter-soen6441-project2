@@ -7,15 +7,15 @@ import twitter4j.*;
 import twitter4j.Status;
 import static services.twitterService.getTwitterStreamFactory;
 
-public class twitterActor extends AbstractActor {
+public class socketActor extends AbstractActor {
     public static Props props(ActorRef out) {
-        return Props.create(twitterActor.class, out);
+        return Props.create(socketActor.class, out);
     }
 
     private final ActorRef out;
     private final TwitterStream stream = getTwitterStreamFactory();
 
-    public twitterActor(ActorRef out) {
+    public socketActor(ActorRef out) {
         this.out = out;
     }
 
@@ -61,7 +61,7 @@ public class twitterActor extends AbstractActor {
 
                     stream.addListener(listener);
 
-                    // Filter
+                    // Filter tweets according to search keyword
                     FilterQuery filter = new FilterQuery();
                     String[] keywordsArray = { message };
                     filter.track(keywordsArray);

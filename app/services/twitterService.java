@@ -56,8 +56,7 @@ public class twitterService {
      * @return A future data type.
      * @throws TwitterException It throws a TwitterException
      */
-    public static CompletionStage<userModal> getUserDetails(String username) throws TwitterException {
-        CompletableFuture<userModal> future = new CompletableFuture<>();
+    public static userModal getUserDetails(String username) throws TwitterException {
         Twitter twitter = getTwitterinstance();
         User user = twitter.showUser(username);
         List<Status> timelineData = getUsersTimeline(username);
@@ -77,8 +76,7 @@ public class twitterService {
         usermodal.setBiggerProfileImageURLHttps(user.getBiggerProfileImageURLHttps());
         usermodal.setIsProtected(user.isProtected());
         usermodal.setTimeline(list);
-        future.complete(usermodal);
-        return future;
+        return usermodal;
     }
 
     /**

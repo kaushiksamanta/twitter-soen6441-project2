@@ -1,6 +1,6 @@
 package controllers;
 
-import actors.twitterActor;
+import actors.socketActor;
 import play.libs.F;
 import play.libs.streams.ActorFlow;
 import akka.actor.*;
@@ -33,7 +33,7 @@ public class socketController extends Controller {
         return WebSocket.Text.acceptOrResult(request -> {
             if (sameOriginCheck(request)) {
                 return CompletableFuture.completedFuture(
-                        F.Either.Right(ActorFlow.actorRef(twitterActor::props,
+                        F.Either.Right(ActorFlow.actorRef(socketActor::props,
                                 actorSystem, materializer)));
             } else {
                 return CompletableFuture.completedFuture(F.Either.Left(forbidden()));

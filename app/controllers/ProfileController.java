@@ -1,12 +1,15 @@
 package controllers;
 
+import actors.profileActor;
+import akka.actor.*;
+import modals.userModal;
 import play.mvc.Controller;
 import play.mvc.Result;
-import twitter4j.TwitterException;
-import services.twitterService;
 import views.html.*;
+import javax.inject.*;
+import scala.compat.java8.FutureConverters;
 import java.util.concurrent.CompletionStage;
-
+import static akka.pattern.Patterns.ask;
 
 /**
  * ProfileController controller class contains a profile method
@@ -16,6 +19,7 @@ import java.util.concurrent.CompletionStage;
  * @author Kaushik Samanta
  */
 
+@Singleton
 public class ProfileController extends Controller{
     /**
      * An action that renders an HTML page with the user profile details.
@@ -26,11 +30,17 @@ public class ProfileController extends Controller{
      * @author Kaushik Samanta
      * @param username  a ScreenName of the user
      * @return  the user details and timeline to the profile.scala.html
-     * @throws TwitterException It throws a TwitterException
      *
      */
 
-    public CompletionStage<Result> profile(String username) throws TwitterException {
-        return twitterService.getUserDetails(username).thenApplyAsync((details -> ok(profile.render(details))));
+    private final ActorRef ProfileActor;
+
+    @Inject public ProfileController(ActorSystem system) {
+        ProfileActor = system.actorOf(profileActor.getProps());
+    }
+
+    public CompletionStage<Result> profile(String username) {
+        return FutureConverters.toJava(ask(ProfileActor, new profileActor.profileMailbox(username),5000))
+                .thenApply(response -> ok(profile.render((userModal)response)));
     }
 }
