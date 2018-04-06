@@ -1,6 +1,8 @@
 package services;
-import com.fasterxml.jackson.databind.node.ArrayNode;
+
+import factory.twitterFactory;
 import modals.userModal;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -10,6 +12,11 @@ import java.util.List;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 import static org.junit.Assert.assertTrue;
+
+import play.Application;
+import play.inject.guice.GuiceApplicationBuilder;
+import play.test.Helpers;
+import static play.inject.Bindings.bind;
 
 /**
  * TwitterServiceUnitTest  contains methods to test 
@@ -22,6 +29,15 @@ import static org.junit.Assert.assertTrue;
  */
 
 public class twitterServiceUnitTest {
+
+    private static Application testApp;
+
+    @BeforeClass
+    public static void initTestApp() {
+        testApp = new GuiceApplicationBuilder()
+                .overrides(bind(twitterService.class).to(twitterFactory.class))
+                .build();
+    }
 
     /**
      * public void testUserDetailsService annotate with @Test will be executed

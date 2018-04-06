@@ -30,6 +30,7 @@ public class socketActor extends AbstractActor {
                             node.put("text", status.getText());
                             node.put("name", status.getUser().getName());
                             node.put("screenName", status.getUser().getScreenName());
+                            node.put("message", message);
                             out.tell(node.toString(), self()) ;
                         }
 

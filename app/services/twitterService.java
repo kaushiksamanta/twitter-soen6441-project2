@@ -5,8 +5,6 @@ import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
 
 /**
  * twitterService class contains all the methods required to access the twitter API.

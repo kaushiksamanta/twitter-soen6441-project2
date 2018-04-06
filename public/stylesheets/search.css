@@ -330,3 +330,15 @@ a,
 		padding: 0 1em;
 	}
 }
+
+.tweet-box {
+	height: 300px;
+	border: 2px solid white;
+	overflow-y: auto;
+	margin-bottom: 20px;
+}
+
+.header {
+	text-align: center;
+	font-size: 30px;
+}
