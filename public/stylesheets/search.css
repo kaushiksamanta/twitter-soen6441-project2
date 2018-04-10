@@ -308,29 +308,6 @@ a,
 	transition-delay: 0.1s;
 }
 
-@media screen and (max-width: 40em) {
-	.search__form {
-		width: 100%;
-		padding: 2em 1em 0;
-	}
-	.search__input {
-		font-size: 2em;
-	}
-	.btn--search {
-		font-size: 1.25em;
-		right: 1em;
-	}
-	.btn--search-close {
-		font-size: 1.15em;
-	}
-	.search__suggestion {
-		font-size: 0.85em;
-		width: 100%;
-		margin-top: 40vh;
-		padding: 0 1em;
-	}
-}
-
 .tweet-box {
 	height: 300px;
 	border: 2px solid white;

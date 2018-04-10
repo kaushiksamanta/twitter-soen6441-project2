@@ -19,13 +19,14 @@
 
             ws.onmessage = function(msg) {
                 var parsed = JSON.parse(msg.data);
-                var dom = "";
-                dom += "<p>" + " " + "*" + " ";
-                dom += "<a target='_blank' href='http://localhost:9000/userProfile/"+parsed.screenName+"'>("+parsed.name+")</a>" + "Tweet - "+parsed.text;
-                dom += "</p>";
-                dom += "</div>";
-                jQuery("#"+parsed.message).append(dom);
-                jQuery("#"+parsed.message).animate({ scrollTop: $("#"+parsed.message).prop("scrollHeight")}, 1000);
+                parsed.forEach(function (value) {
+                    var dom = "";
+                    dom += "<p>" + " " + "*" + " ";
+                    dom += "<a target='_blank' href='http://localhost:9000/userProfile/"+value.screenName+"'>("+value.name+")</a>" + "Tweet - "+value.text;
+                    dom += "</p>";
+                    jQuery("#"+value.message).append(dom);
+                    jQuery("#"+value.message).animate({ scrollTop: $("#"+value.message).prop("scrollHeight")}, 500);
+                });
             };
 
             ws.onclose = function(msg) {

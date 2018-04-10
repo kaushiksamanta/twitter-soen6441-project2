@@ -1,11 +1,17 @@
 package actors;
 
 import akka.actor.*;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import play.libs.Json;
 import twitter4j.*;
 import twitter4j.Status;
-import static services.twitterService.getTwitterStreamFactory;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import static services.twitterService.getTwitterinstance;
 
 public class socketActor extends AbstractActor {
     public static Props props(ActorRef out) {
@@ -13,7 +19,7 @@ public class socketActor extends AbstractActor {
     }
 
     private final ActorRef out;
-    private final TwitterStream stream = getTwitterStreamFactory();
+    private final Twitter twitter = getTwitterinstance();
 
     public socketActor(ActorRef out) {
         this.out = out;
@@ -23,52 +29,33 @@ public class socketActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(String.class, message -> {
-                    StatusListener listener = new StatusListener() {
-                        @Override
-                        public void onStatus(Status status) {
-                            ObjectNode node = Json.newObject();
-                            node.put("text", status.getText());
-                            node.put("name", status.getUser().getName());
-                            node.put("screenName", status.getUser().getScreenName());
-                            node.put("message", message);
-                            out.tell(node.toString(), self()) ;
-                        }
-
-                        @Override
-                        public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
-
-                        }
-
-                        @Override
-                        public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
-
-                        }
-
-                        @Override
-                        public void onScrubGeo(long userId, long upToStatusId) {
-
-                        }
-
-                        @Override
-                        public void onStallWarning(StallWarning warning) {
-
-                        }
-
-                        @Override
-                        public void onException(Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    };
-
-                    stream.addListener(listener);
-
-                    // Filter tweets according to search keyword
-                    FilterQuery filter = new FilterQuery();
-                    String[] keywordsArray = { message };
-                    filter.track(keywordsArray);
-                    filter.language(new String[]{"en"});
-                    stream.filter(filter);
-
+                    Runnable task = new Runnable() {
+                            @Override
+                            public void run() {
+                                Query query = new Query(message);
+                                query.setCount(10);
+                                QueryResult result = null;
+                                try {
+                                    result = twitter.search(query);
+                                } catch (TwitterException e) {
+                                    e.printStackTrace();
+                                }
+                                List<Status> tweets = result.getTweets();
+                                ArrayNode tweetJSON = Json.newArray();
+                                tweets.forEach((tweet) -> {
+                                    ObjectNode node = Json.newObject();
+                                    node.put("text", tweet.getText());
+                                    node.put("name", tweet.getUser().getName());
+                                    node.put("screenName", tweet.getUser().getScreenName());
+                                    node.put("message", message);
+                                    tweetJSON.add(node);
+                                });
+                                out.tell(tweetJSON.toString(), self()) ;
+                            }
+                        };
+                    ScheduledExecutorService service = Executors
+                            .newSingleThreadScheduledExecutor();
+                    service.scheduleAtFixedRate(task, 0, 5, TimeUnit.SECONDS);
                     }
                 )
                 .build();

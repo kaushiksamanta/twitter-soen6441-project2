@@ -1,11 +1,13 @@
 package services;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import modals.userModal;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 import java.util.ArrayList;
 import java.util.List;
-
+import play.libs.Json;
 /**
  * twitterService class contains all the methods required to access the twitter API.
  * @version 1.0
@@ -46,6 +48,29 @@ public class twitterService {
         return twitterStream;
     }
 
+    /**
+     * Retrieve the instance of CompletionStage with tweets.
+     * @author Kaushik Samanta
+     * @param keyword A keyword of type string.
+     * @return A future data type.
+     * @throws TwitterException It throws a TwitterException
+     */
+    public static ArrayNode getTweets(String keyword) throws TwitterException {
+        Twitter twitter = getTwitterinstance();
+        Query query = new Query(keyword);
+        query.setCount(10);
+        QueryResult result = twitter.search(query);
+        List<Status> tweets = result.getTweets();
+        ArrayNode tweetJSON = Json.newArray();
+        tweets.forEach((tweet) -> {
+            ObjectNode node = Json.newObject();
+            node.put("text", tweet.getText());
+            node.put("name", tweet.getUser().getName());
+            node.put("screenName", tweet.getUser().getScreenName());
+            tweetJSON.add(node);
+        });
+        return tweetJSON;
+    }
 
     /**
      * Retrieve the instance of CompletionStage with userDetails.
