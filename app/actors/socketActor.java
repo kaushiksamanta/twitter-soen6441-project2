@@ -53,9 +53,9 @@ public class socketActor extends AbstractActor {
                                 out.tell(tweetJSON.toString(), self()) ;
                             }
                         };
-                    ScheduledExecutorService service = Executors
+                        ScheduledExecutorService service = Executors
                             .newSingleThreadScheduledExecutor();
-                    service.scheduleAtFixedRate(task, 0, 5, TimeUnit.SECONDS);
+                        service.scheduleAtFixedRate(task, 0, 10, TimeUnit.SECONDS);
                     }
                 )
                 .build();
