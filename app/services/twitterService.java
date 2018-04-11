@@ -8,6 +8,7 @@ import twitter4j.conf.ConfigurationBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import play.libs.Json;
+
 /**
  * twitterService class contains all the methods required to access the twitter API.
  * @version 1.0
@@ -37,16 +38,6 @@ public class twitterService {
         return twitter;
     }
 
-    /**
-     * Retrieve the instance of TwitterStream with some default configuration.
-     * @author Kaushik Samanta
-     * @return A TwitterStream data type.
-     */
-    public static TwitterStream getTwitterStreamFactory() {
-        ConfigurationBuilder cb = init();
-        TwitterStream twitterStream = new TwitterStreamFactory(cb.build()).getInstance();
-        return twitterStream;
-    }
 
     /**
      * Retrieve the instance of CompletionStage with tweets.

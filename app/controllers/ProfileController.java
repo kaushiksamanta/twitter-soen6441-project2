@@ -1,6 +1,6 @@
 package controllers;
 
-import actors.profileActor;
+import actor.profileActor;
 import akka.actor.*;
 import modals.userModal;
 import play.mvc.Controller;

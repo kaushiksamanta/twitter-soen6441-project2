@@ -1,6 +1,6 @@
 package controllers;
 
-import actors.socketActor;
+import actor.socketActor;
 import play.libs.F;
 import play.libs.streams.ActorFlow;
 import akka.actor.*;
@@ -15,6 +15,14 @@ import org.slf4j.Logger;
 @Singleton
 public class socketController extends Controller {
 
+    /**
+     * This method opens a websocket connection between client and socketController.
+     *
+     * @author Kaushik Samanta
+     * @param username  a ScreenName of the user
+     * @return  the user details and timeline to the profile.scala.html
+     *
+     */
 
     private final Logger logger = org.slf4j.LoggerFactory.getLogger("controllers.socketController");
 

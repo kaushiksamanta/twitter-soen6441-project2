@@ -1,4 +1,4 @@
-package actors;
+package actor;
 
 import akka.actor.*;
 import com.fasterxml.jackson.databind.node.ArrayNode;

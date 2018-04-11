@@ -18,8 +18,10 @@ libraryDependencies ++= Seq(
   "javax.xml.bind" % "jaxb-api" % "2.1",
   "org.twitter4j" % "twitter4j-core" % "4.0.6",
   "org.twitter4j" % "twitter4j-async" % "4.0.6",
-  "org.twitter4j" % "twitter4j-stream" % "4.0.6"
+  "com.typesafe.akka" %% "akka-testkit" % "2.5.11" % Test,
+  "org.mockito" % "mockito-core" % "2.18.0" % Test
 )
+
 
 // Make verbose tests
 testOptions in Test := Seq(Tests.Argument(TestFrameworks.JUnit, "-a", "-v"))

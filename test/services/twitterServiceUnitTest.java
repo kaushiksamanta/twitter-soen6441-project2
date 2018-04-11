@@ -1,22 +1,23 @@
 package services;
 
-import factory.twitterFactory;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import modals.userModal;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import play.libs.Json;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
 import java.util.List;
-import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 import static org.junit.Assert.assertTrue;
 
-import play.Application;
-import play.inject.guice.GuiceApplicationBuilder;
-import play.test.Helpers;
-import static play.inject.Bindings.bind;
+import static org.mockito.Mockito.mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import mocks.tweets;
 
 /**
  * TwitterServiceUnitTest  contains methods to test 
@@ -29,15 +30,22 @@ import static play.inject.Bindings.bind;
  */
 
 public class twitterServiceUnitTest {
-
-    private static Application testApp;
-
-    @BeforeClass
-    public static void initTestApp() {
-        testApp = new GuiceApplicationBuilder()
-                .overrides(bind(twitterService.class).to(twitterFactory.class))
-                .build();
-    }
+//
+//    private tweets tweetService;
+//
+//    @Before
+//    public void setUp(){
+//        tweetService = mock(tweets.class);
+//        ArrayNode tweetJSON = null;
+//        for(int i = 0; i < 10; i++) {
+//            ObjectNode node = Json.newObject();
+//            node.put("text", "asdsad"+i);
+//            node.put("name", "asdfasds"+i);
+//            node.put("screenName", "sdsadsadsa"+i);
+//            tweetJSON.add(node);
+//        }
+//        tweetService.setTweets(tweetJSON);
+//    }
 
     /**
      * public void testUserDetailsService annotate with @Test will be executed
@@ -48,8 +56,8 @@ public class twitterServiceUnitTest {
      */
     @Test
     public void testUserDetailsService() throws TwitterException, ExecutionException, InterruptedException {
-        CompletionStage<userModal> result = twitterService.getUserDetails("NarendraGarg001");
-        assertTrue(result.toCompletableFuture().get().getScreenName() != null);
+        userModal result = twitterService.getUserDetails("NarendraGarg001");
+        assertTrue(result != null);
     }
 
     /**
@@ -61,6 +69,17 @@ public class twitterServiceUnitTest {
     @Test
     public void testUserTimelineService() throws TwitterException, ExecutionException, InterruptedException {
         List<Status> result = twitterService.getUsersTimeline("NarendraGarg001");
+        assertTrue(result.size() >= 0);
+    }
+
+    /**
+     * public void testTweetsService annotate with @Test will be executed
+     * as a Test case.
+     * testTweetsService is getting all the tweets for a particular search keyword.
+     */
+    @Test
+    public void testTweetsService() throws TwitterException, ExecutionException, InterruptedException {
+        ArrayNode result = twitterService.getTweets("Technology");
         assertTrue(result.size() >= 0);
     }
 
