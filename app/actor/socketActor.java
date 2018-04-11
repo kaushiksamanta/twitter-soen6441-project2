@@ -13,6 +13,13 @@ import java.util.concurrent.TimeUnit;
 
 import static services.twitterService.getTwitterinstance;
 
+/**
+ * socketActor Actor class communicates with the
+ * Twitter API
+ * @version 1.0
+ * @see socketActor
+ * @author Kaushik Samanta
+ */
 public class socketActor extends AbstractActor {
     public static Props props(ActorRef out) {
         return Props.create(socketActor.class, out);

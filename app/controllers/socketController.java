@@ -11,6 +11,13 @@ import javax.inject.Singleton;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
+/**
+ * socketController class contains a socket method
+ * passes the data from front end  to the socket actor
+ * @version 1.0
+ * @see socketController
+ * @author Kaushik Samanta
+ */
 
 @Singleton
 public class socketController extends Controller {

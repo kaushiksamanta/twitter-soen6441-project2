@@ -4,6 +4,14 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import services.twitterService;
 
+/**
+ * profileActor Actor class communicates with the
+ * Twitter API and fetches all the User details of
+ * the given username.
+ * @version 1.0
+ * @see profileActor
+ * @author Kaushik Samanta
+ */
 public class profileActor extends AbstractActor {
 
     public static Props getProps() {

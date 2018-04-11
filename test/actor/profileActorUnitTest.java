@@ -9,6 +9,15 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 
 import static org.junit.Assert.assertTrue;
+/**
+ * profileActorUnitTest  class contains a method to
+ * test the working of the Profile Actor class on the
+ * getting profile details of the twitter users.
+ * @see profileActor
+ * @see profileActorUnitTest
+ * @author Tejpreet Kaur
+ *
+ */
 
 public class profileActorUnitTest {
 
